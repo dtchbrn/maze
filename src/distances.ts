@@ -21,6 +21,10 @@ class Distances {
   getCells() {
     return this.cells.keys();
   }
+
+  getLongestDistance() {
+    return Math.max(...Array.from(this.cells.values()));
+  }
 }
 
 export default Distances;

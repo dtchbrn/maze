@@ -68,6 +68,10 @@ export class Grid {
     return this.rows * this.cols;
   }
 
+  setDistances(distances) {
+    this.distances = distances;
+  }
+
   contentsOfCell(cell: Cell) {
     if (this.distances && this.distances.getCellDistance(cell)) {
       return this.distances.getCellDistance(cell);
