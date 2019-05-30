@@ -8,7 +8,7 @@ import styled, { StyledComponent } from "styled-components";
 
 import "./styles.css";
 
-const GRID_SIZE = 30;
+const GRID_SIZE = 15;
 
 interface IStyledCell {
   north: boolean;
@@ -27,6 +27,11 @@ const StyledCell = styled.div`
   box-sizing: border-box;
   width: calc(100% / ${GRID_SIZE});
   height: calc(100% / ${GRID_SIZE});
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(0, 0, 0, 0.25);
+  font-size: 12px;
 `;
 
 const GridWrapper = styled.div`
@@ -55,17 +60,29 @@ const Button = styled.button`
 function App() {
   let g = new Grid(GRID_SIZE, GRID_SIZE);
   BinaryTree.on(g);
+  let start: Cell = g.grid[0][0];
+  let distances = start.distances();
+  g.distances = distances;
+  console.log("g with distances", g);
   const [grid, setGrid] = React.useState(g);
 
   const newMaze = () => {
     let g = new Grid(GRID_SIZE, GRID_SIZE);
     BinaryTree.on(g);
+    let start: Cell = g.grid[0][0];
+    let distances = start.distances();
+    g.distances = distances;
+    console.log("g with distances", g);
     setGrid(g);
   };
 
   const newSidewinderMaze = () => {
     let g = new Grid(GRID_SIZE, GRID_SIZE);
     Sidewinder.on(g);
+    let start: Cell = g.grid[0][0];
+    let distances = start.distances();
+    g.distances = distances;
+    console.log("g with distances", g);
     setGrid(g);
   };
 
@@ -81,7 +98,9 @@ function App() {
                 south={cell.linked(cell.south)}
                 east={cell.linked(cell.east)}
                 west={cell.linked(cell.west)}
-              />
+              >
+                {grid.distances.getCellDistance(cell)}
+              </StyledCell>
             );
           });
         })}

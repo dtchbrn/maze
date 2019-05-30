@@ -1,3 +1,5 @@
+import Distances from "./distances";
+
 export class Cell {
   row: number;
   col: number;
@@ -28,8 +30,8 @@ export class Cell {
     }
   }
 
-  getLinks(): Map<Cell, boolean> {
-    return this.links;
+  getLinks(): Cell[] {
+    return Array.from(this.links.keys());
   }
 
   linked(cell: Cell): boolean {
@@ -51,6 +53,36 @@ export class Cell {
       list.push(this.west);
     }
     return list;
+  }
+
+  distances() {
+    // instantiate Distances
+    let distances = new Distances(this);
+    // We initialize our frontier set to be an array of one element
+    // this cell, our starting point
+    let frontier = [this];
+    // loop until there are no cells in frontier, meaning
+    // we've easyred the distance of every cell to our root cell.
+    while (frontier.length > 0) {
+      // newFrontier will hold all the unvisited cells
+      // that are linked to cells in the current frontier set.
+      //
+      let newFrontier = [];
+      for (let i = 0; i < frontier.length; i++) {
+        let cell = frontier[i];
+        cell.getLinks().forEach(linked => {
+          if (distances.getCellDistance(linked) === undefined) {
+            distances.setCellDistance(
+              linked,
+              distances.getCellDistance(cell) + 1
+            );
+            newFrontier.push(linked);
+          }
+        });
+      }
+      frontier = newFrontier;
+    }
+    return distances;
   }
 }
 

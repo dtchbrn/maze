@@ -1,9 +1,11 @@
 import Cell from "./cell";
+import Distances from "./distances";
 
 export class Grid {
   rows: number;
   cols: number;
   grid: Cell[][];
+  distances: Distances;
 
   constructor(rows, cols) {
     this.rows = rows;
@@ -60,6 +62,18 @@ export class Grid {
     let row = Math.floor(Math.random() * this.rows);
     let col = Math.floor(Math.random() * this.cols);
     return this.grid[row][col];
+  }
+
+  size() {
+    return this.rows * this.cols;
+  }
+
+  contentsOfCell(cell: Cell) {
+    if (this.distances && this.distances.getCellDistance(cell)) {
+      return this.distances.getCellDistance(cell);
+    } else {
+      return null;
+    }
   }
 }
 
